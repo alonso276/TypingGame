@@ -42,6 +42,21 @@ let score = 0;
 //init time
 let time = 10;
 
+//init difficulty
+
+// set difficulty ____> if there's something there I want to set the variable to that data. Otherwise set it to medium
+let difficulty =
+	localStorage.getItem('difficulty') !== null
+		? localStorage.getItem('difficulty')
+		: 'medium';
+
+//set difficulty select value
+
+difficultySelect.value =
+	localStorage.getItem('difficulty') !== null
+		? localStorage.getItem('difficulty')
+		: 'medium';
+
 //? ///////////////////////////////
 //? focus on text on start
 
@@ -110,12 +125,32 @@ text.addEventListener('input', (e) => {
 		//creates a new word
 		addWordToDOM();
 		updateScore();
+
 		//clear
 		e.target.value = '';
-		// append time as you enter a correct word
-		time += 5;
+
+		// append time depending on difficulty
+		if (difficulty === 'hard') {
+			time += 2;
+		} else if (difficulty === 'medium') {
+			time += 3;
+		} else {
+			time += 5;
+		}
 		updateTime();
 	}
 });
 
-//Settings
+//Settings btn click- we used translate prop in css
+
+settingsBtn.addEventListener('click', () => settings.classList.toggle('hide'));
+
+//Settings select
+
+settingsForm.addEventListener('change', (e) => {
+	difficulty = e.target.value;
+
+	localStorage.setItem('difficulty', difficulty);
+
+	// console.log(difficulty);
+});
